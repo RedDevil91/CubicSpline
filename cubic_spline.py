@@ -54,7 +54,7 @@ class CubicSpline(object):
 
         l_values.append(self.steps[-1] * (2 - u_values[-1]))
         z_values.append((self.alphas[-1] - self.steps[-1] * z_values[-1]) / l_values[-1])
-        self.c_values[-1] = z_values[1]
+        self.c_values[-1] = z_values[-1]
 
         for idx in xrange(self.data_len-2, -1, -1):
             self.c_values[idx] = z_values[idx] - u_values[idx] * self.c_values[idx+1]
@@ -77,22 +77,27 @@ class CubicSpline(object):
 if __name__ == '__main__':
     import sys
 
-    control_points = np.array([[0.1, 4.1],
-                               [0.63, 6.89],
-                               [1.32, -12.0],
-                               [2.124, 1.22],
-                               [3.87, 0.12]], dtype=np.float32)
-
-    constraints = np.array([-11.2, 5.0])
-
-    # control_points = np.array([[-1.0, 0.86199480],
-    #                            [-0.5, 0.95802009],
-    #                            [0.0, 1.0986123],
-    #                            [0.5, 1.2943767]], dtype=np.float32)
+    # control_points = np.array([[0.1, 4.1],
+    #                            [0.63, 6.89],
+    #                            [1.32, -12.0],
+    #                            [2.124, 1.22],
+    #                            [3.87, 0.12]], dtype=np.float32)
     #
-    # constraints = np.array([0.155362, 0.451863])
+    # constraints = np.array([-11.2, -15.0])
+
+    control_points = np.array([[-1.0, 0.86199480],
+                               [-0.5, 0.95802009],
+                               [0.0, 1.0986123],
+                               [0.5, 1.2943767]], dtype=np.float32)
+
+    constraints = np.array([0.155362, 0.451863])
 
     spline = CubicSpline(control_points, constraints)
     spline.plotSpline()
+
+    print spline.a_values
+    print spline.b_values
+    print spline.c_values
+    print spline.d_values
 
     sys.exit(0)
